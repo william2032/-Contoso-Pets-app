@@ -500,8 +500,10 @@ do
                         //split the user inputs separated by commas in an array
                         string[] dogCharactersArray = dogCharacteristics.Split(",");
                         Array.Sort(dogCharactersArray);
+
                         string dogMatch = "";
-                        // Dictionary<string, List<string>> matches = new Dictionary<string, List<string>>();
+                        string[] searchingIcons = { " |", " /", "--", " \\", " *" };
+
 
                         for (int i = 0; i < maxPets; i++)
                         {
@@ -513,19 +515,32 @@ do
 
                                 foreach (var dogCharacter in dogCharactersArray)
                                 {
-
-                                    if (dogDescription.Contains(dogCharacter))
+                                    //only search if there is a term to search for
+                                    if (dogCharacter != null && dogCharacter.Trim() != "")
                                     {
-                                        dogMatch = dogUsername; //store current dog username in dogmatch
-                                        // Console.WriteLine(dogMatch);
+                                        for (int j = 2; j > -1; j--)
+                                        {
+                                            //update "searching" message to show countdown
+                                            foreach (string icon in searchingIcons)
+                                            {
+                                                Console.Write($"\rsearching our dog {dogUsername} for {dogCharacter.Trim()} {icon} {j.ToString()}");
+                                                Thread.Sleep(200);
+                                            }
 
-                                        Console.WriteLine($"Our dog {dogUsername} matches your search for {dogCharacter}");
+                                            Console.Write($"\r{new String(' ', Console.BufferWidth)}");
+                                        }
 
 
-                                        noMatchesDog = false;
+                                        if (dogDescription.Contains(" " + dogCharacter.Trim() + " "))
+                                        {
+                                            dogMatch = dogUsername; //store current dog username in dogmatch
+                                                                    // Console.WriteLine(dogMatch);
+                                            Console.WriteLine($"Our dog {dogUsername} matches your search for {dogCharacter}");
 
+                                            noMatchesDog = false;
+
+                                        }
                                     }
-
                                 }
                                 if (noMatchesDog)
                                 {
@@ -540,9 +555,7 @@ do
                                     Console.WriteLine($"{dogDescription}\n");
 
                                     noMatchesDog = false;
-
                                 }
-
                             }
 
                         }
