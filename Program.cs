@@ -446,7 +446,8 @@ do
             string catCharacterstic = "";
             while (catCharacterstic == "")
             {
-                Console.WriteLine($"\nEnter one desired cat characterstics to search for:  ");
+                //have user enter multiple comma separated characteristics to search for
+                Console.WriteLine($"\nEnter dog characteristics to search for separated by commas ");
                 readResult = Console.ReadLine();
                 if (readResult != null)
                 {
@@ -461,6 +462,7 @@ do
             }
 
             Array.Sort(catSearches);
+            // "rotating" animation with countdown
             string[] searchingIcons = { " |", " /", "--", " \\", " *" };
 
             bool matchesAnyCat = false;
@@ -470,17 +472,19 @@ do
             {
                 if (ourAnimals[i, 1].Contains("cat"))
                 {
-
+                    // Search combined descriptions and report results
                     catDescribition = ourAnimals[i, 4] + "\n" + ourAnimals[i, 5];
                     catNickname = ourAnimals[i, 3];
                     bool matchesCurrentCat = false;
 
                     foreach (string term in catSearches)
                     {
+                        // only search if there is a term to search for
                         if (term != null && term.Trim() != "")
                         {
                             for (int j = 2; j > -1; j--)
                             {
+                                //  "searching" message to show countdown
                                 foreach (string icon in searchingIcons)
                                 {
                                     Console.Write($"\rsearching our cat {catNickname} for {term.Trim()} {icon} {j.ToString()}");
@@ -489,7 +493,7 @@ do
                                 Console.Write($"\r{new String(' ', Console.BufferWidth)}");
 
                             }
-
+                            // iterate submitted characteristic terms and search description for each term
                             if (catDescribition.Contains(" " + term.Trim() + " "))
                             {
                                 Console.WriteLine($"\rOur cat {catNickname} ,matches your search for {term.Trim()}");
@@ -501,6 +505,8 @@ do
                         }
 
                     }
+                    
+                    //  if the current dog is match, display the dog's info
                     if (matchesCurrentCat)
                     {
                         Console.WriteLine($"our cat {catNickname} ({ourAnimals[i, 0]})\n{catDescribition}\n");
